@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": true
+            },
+            "previewLimit": 50,
+            "server": "dpg-cnkh8gv109ks73d1s5pg-a.oregon-postgres.render.com",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "CSE-Motors-DB",
+            "database": "csemotorsdb_8gig",
+            "username": "cse340",
+            "password": "ZNwM5EIxDadquNLudjAKjLiDR4igrgRZ"
+        }
+    ]
+}
