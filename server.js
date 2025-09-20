@@ -139,6 +139,6 @@ console.log("ENV check -> HOST:", HOST, "PORT:", PORT)
 /* ***********************
  * Log statement to confirm server operation
  *************************/
-app.listen(PORT, HOST, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`app listening on http://${HOST}:${PORT}`)
 })
