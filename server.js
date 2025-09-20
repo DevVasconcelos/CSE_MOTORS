@@ -130,7 +130,8 @@ app.use(async (err, req, res, next) => {
  * Values from .env (environment) file
  *************************/
 const PORT = Number(process.env.PORT) || 3000
-const HOST = process.env.HOST || "localhost"
+
+const HOST = process.env.HOST || (process.env.PORT ? "0.0.0.0" : "localhost")
 
 // sanity check
 console.log("ENV check -> HOST:", HOST, "PORT:", PORT)
