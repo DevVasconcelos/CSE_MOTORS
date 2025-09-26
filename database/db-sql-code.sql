@@ -1,3 +1,10 @@
+--
+-- Database: 'cse 340 project', .public schema
+-- Assignment 2, Task 2
+--
+
+-- Create client_type data type
+
 CREATE TYPE public.account_type AS ENUM
     ('Client', 'Employee', 'Admin');
 
