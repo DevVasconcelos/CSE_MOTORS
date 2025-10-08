@@ -106,19 +106,30 @@ async function accountLogin(req, res) {
     return;
   }
   try {
-    if (await bcrypt.compare(account_password, accountData.account_password)) {
+    const passwordMatch = await bcrypt.compare(account_password, accountData.account_password);
+    if (passwordMatch) {
       delete accountData.account_password;
-      
-      utilities.updateCookie(accountData, res);
-     
+      try {
+        utilities.updateCookie(accountData, res);
+      } catch(cookieErr) {
+        console.error('Failed to set auth cookie:', cookieErr.message);
+        req.flash('notice', 'Authentication configuration error. Contact support.');
+        return res.status(500).render('account/login', { title: 'Login', nav, errors: null, account_email });
+      }
       return res.redirect("/account/");
-    } // Need to have a wrong password option
-    else {
-      req.flash("notice", "Please check your credentials and try again."); // Login was hanging with bad password but correct id
-      res.redirect("/account/");
+    } else {
+      req.flash("notice", "Please check your credentials and try again.");
+      return res.status(401).render("account/login", {
+        title: "Login",
+        nav,
+        errors: null,
+        account_email,
+      });
     }
   } catch (error) {
-    return new Error("Access Forbidden");
+    console.error('Login error:', error.message);
+    req.flash('notice', 'Unexpected error during login.');
+    return res.status(500).render('account/login', { title: 'Login', nav, errors: null, account_email });
   }
 }
 

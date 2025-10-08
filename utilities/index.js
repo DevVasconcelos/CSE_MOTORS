@@ -206,9 +206,17 @@ Util.checkJWTToken = (req, res, next) => {
  */
 
 Util.updateCookie = (accountData, res) => {
-  const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: 3600,
-  });
+  let secret = process.env.ACCESS_TOKEN_SECRET;
+  if (!secret) {
+    // Fallback de desenvolvimento para evitar travar login silenciosamente
+    if (process.env.NODE_ENV === 'development') {
+      secret = 'dev-jwt-secret-change-me';
+      console.warn('[WARN] ACCESS_TOKEN_SECRET ausente. Usando fallback de desenvolvimento. Defina ACCESS_TOKEN_SECRET no .env para produção.');
+    } else {
+      throw new Error('Security configuration error: ACCESS_TOKEN_SECRET not set');
+    }
+  }
+  const accessToken = jwt.sign(accountData, secret, { expiresIn: 3600 });
   if (process.env.NODE_ENV === "development") {
     res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 });
   } else {
